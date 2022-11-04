@@ -2,11 +2,14 @@ const {Quote, validateQuote} = require('../models/Quotes');
 const express = require('express')
 const {User, validate} = require("../models/Users");
 const router = express.Router();
+const auth = require("../auth");
 
 
 
-router.post('/quotes', async (req, res) => {
+router.post('/quotes',auth, async (req, res) => {
     //First Validate The Request
+    res.header("Access-Control-Allow-Origin", "*");
+
     const { error } = validateQuote(req.body);
     if (error){
         console.log(error)
@@ -30,6 +33,7 @@ router.post('/quotes', async (req, res) => {
 
 
 router.get("/quotes", (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
 
     function QuoteHandler(error, quotes){
         if (error) {

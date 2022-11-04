@@ -11,6 +11,8 @@ dotenv.config();
 
 
 router.post("/users/login", async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+
     email_or_username = req.body.username;
     password = req.body.password;
 
@@ -36,7 +38,14 @@ router.post("/users/login", async (req, res) => {
             userId: account.username,
         }
 
-        const token = jwt.sign(data, jwtSecretKey);
+        const token = jwt.sign(
+            {
+                userId: user._id,
+                userEmail: user.email,
+            },
+            jwtSecretKey,
+            { expiresIn: "24h" }
+        );
 
         return res.status(202).send(token);
     }
@@ -46,6 +55,7 @@ router.post("/users/login", async (req, res) => {
 
 // Verification of JWT
 router.get("/user/validateToken", (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
     // Tokens are generally passed in header of request
     // Due to security reasons.
 

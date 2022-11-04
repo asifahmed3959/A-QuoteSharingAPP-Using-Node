@@ -8,6 +8,7 @@ const Authentication = require("./router/AuthenticationRouter");
 const app = express();
 const dotenv = require('dotenv');
 dotenv.config();
+var cors = require('cors')
 
 
 // Mongo DB connection
@@ -23,6 +24,19 @@ app.use('/api', userRouter);
 app.use('/api', QuoteRouter);
 app.use('/api', Authentication);
 
+// Curb Cores Error by adding a header here
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
+    );
+    res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+    );
+    next();
+});
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));

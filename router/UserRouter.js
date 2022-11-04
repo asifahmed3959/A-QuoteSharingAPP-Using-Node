@@ -7,6 +7,8 @@ const router = express.Router();
 
 
 router.post('/users/register', async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+
     //First Validate The Request
     const { error } = validate(req.body);
     if (error){
@@ -34,6 +36,7 @@ router.post('/users/register', async (req, res) => {
 
 
 router.get('/users', (req, res) =>{
+    res.header("Access-Control-Allow-Origin", "*");
 
    User.find({}, function (error, users){
       if (error) {
